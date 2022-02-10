@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('/', 'SimulatorController');
+Route::get('/simulator', 'SimulatorController@simulator')->name('simulator');

@@ -7,49 +7,69 @@
 	
     <div class="card shadow-lg p-3 rounded">
         <div class="card-body">
-            <form>
+            <form action="{{ route('simulator') }}">
                 <div class="form-row">
 					<div class="col-md-6 mb-3">
 						<label for="origin">Origem (DDD)</label>
-						<select name="origin" class="custom-select is-invalid" id="origin" aria-describedby="validationServerOrigin">
+						<select name="origin" class="custom-select @if($errors->has('origin')) is-invalid @endif" id="origin" aria-describedby="validationServerOrigin">
 						  <option selected disabled value="">Selecione...</option>
-						  <option>...</option>
+						  @forelse ($cityCodes as $code)
+						  	<option value="{{ $code->code }}" @if(old('origin') == $code->code) selected @endif>{{ $code->code }}</option>
+						  @empty
+						  	<option>Nenhum registro encontrado</option>
+						  @endforelse
 						</select>
-						<div id="validationServerOrigin" class="invalid-feedback">
-							Selecione o DDD de origem
-						</div>
+						@error('origin')
+							<div id="validationServerOrigin" class="invalid-feedback">
+								{{ $message }}
+							</div>
+						@enderror
 					</div>
 
 					<div class="col-md-6 mb-3">
 						<label for="destiny">Destino (DDD)</label>
-						<select name="destiny" class="custom-select is-invalid" id="destiny" aria-describedby="validationServerDestiny">
+						<select name="destiny" class="custom-select @if($errors->has('destiny')) is-invalid @endif" id="destiny" aria-describedby="validationServerDestiny">
 						  <option selected disabled value="">Selecione...</option>
-						  <option>...</option>
+						  @forelse ($cityCodes as $code)
+						  	<option value="{{ $code->code }}" @if(old('destiny') == $code->code) selected @endif>{{ $code->code }}</option>
+						  @empty
+						  	<option>Nenhum registro encontrado</option>
+						  @endforelse
 						</select>
-						<div id="validationServerDestiny" class="invalid-feedback">
-						  Selecione o DDD de destino
-						</div>
+						@error('destiny')
+							<div id="validationServerDestiny" class="invalid-feedback">
+								{{ $message }}
+							</div>
+						@enderror
 					</div>
                 </div>
-
+				
                 <div class="form-row">
 					<div class="col-md-6 mb-3">
 						<label for="minutes">Minutos da ligação</label>
-						<input type="number" name="minutes" class="form-control is-invalid" id="minutes" aria-describedby="validationServerMinutes">
-						<div id="validationServerMinutes" class="invalid-feedback">
-							Forneça os minutos da ligação
-						</div>
+						<input type="number" name="minutes" class="form-control @if($errors->has('minutes')) is-invalid @endif" value="{{ old('minutes') }}" id="minutes" aria-describedby="validationServerMinutes">
+						@error('minutes')
+							<div id="validationServerMinutes" class="invalid-feedback">
+								{{ $message }}
+							</div>
+						@enderror
 					</div>
 
 					<div class="col-md-6 mb-3">
 						<label for="plan">Selecione um plano</label>
-						<select name="plan" class="custom-select is-invalid" id="plan" aria-describedby="validationServerPlan">
+						<select name="plan" class="custom-select @if($errors->has('plan')) is-invalid @endif" id="plan" aria-describedby="validationServerPlan">
 							<option selected disabled value="">Selecione...</option>
-							<option>...</option>
+							@forelse ($plans as $plan)
+								<option value="{{ $plan->minutes }}" @if(old('plan') == $plan->minutes) selected @endif>{{ $plan->name }}</option>
+							@empty
+								<option>Nenhum registro encontrado</option>
+							@endforelse
 						</select>
+						@error('plan')
 						<div id="validationServerPlan" class="invalid-feedback">
-							Selecione um plano
+							{{ $message }}
 						</div>
+						@enderror
 					</div>
                 </div>
 				

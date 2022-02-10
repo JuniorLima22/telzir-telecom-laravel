@@ -42,9 +42,9 @@
 	<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
 
 	<script>
-			// $(document).ready(function(){
-			//     alert('Hi JL');
-			// });
+		$(document).ready(function() {
+   			$('.load').fadeOut('slow');
+		});
 	</script>
 </body>
 </html>

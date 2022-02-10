@@ -16,7 +16,7 @@ class CreateCityCodePricesTable extends Migration
         Schema::create('city_code_prices', function (Blueprint $table) {
             $table->id();
             $table->string('origin');
-            $table->string('destiny');
+            $table->string('destination');
             $table->float('price', 8, 2)->default(0.01);
             $table->timestamps();
         });

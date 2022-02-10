@@ -8,5 +8,5 @@ class CityCodePrice extends Model
 {
     protected $table = 'city_code_prices';
 
-    protected $fillable = ['origin', 'destiny', 'price'];
+    protected $fillable = ['origin', 'destination', 'price'];
 }

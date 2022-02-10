@@ -27,17 +27,17 @@
 					</div>
 
 					<div class="col-md-6 mb-3">
-						<label for="destiny">Destino (DDD)</label>
-						<select name="destiny" class="custom-select @if($errors->has('destiny')) is-invalid @endif" id="destiny" aria-describedby="validationServerDestiny">
+						<label for="destination">Destino (DDD)</label>
+						<select name="destination" class="custom-select @if($errors->has('destination')) is-invalid @endif" id="destination" aria-describedby="validationServerDestination">
 						  <option selected disabled value="">Selecione...</option>
 						  @forelse ($cityCodes as $code)
-						  	<option value="{{ $code->code }}" @if(old('destiny') == $code->code) selected @endif>{{ $code->code }}</option>
+						  	<option value="{{ $code->code }}" @if(old('destination') == $code->code) selected @endif>{{ $code->code }}</option>
 						  @empty
 						  	<option>Nenhum registro encontrado</option>
 						  @endforelse
 						</select>
-						@error('destiny')
-							<div id="validationServerDestiny" class="invalid-feedback">
+						@error('destination')
+							<div id="validationServerDestination" class="invalid-feedback">
 								{{ $message }}
 							</div>
 						@enderror
@@ -73,7 +73,11 @@
 					</div>
                 </div>
 				
-                <button class="btn btn-primary" type="submit">Calcular</button>
+				
+				<div class="d-flex align-items-center">
+					<button class="btn btn-primary" type="submit">Calcular</button>
+					<div class="load spinner-border ml-auto" role="status" aria-hidden="true"></div>
+				</div>
             </form>
         </div>
     </div>

@@ -43,7 +43,15 @@
 
 	<script>
 		$(document).ready(function() {
-   			$('.load').fadeOut('slow');
+   			$('.load').fadeOut('slow', function(){
+				$('button').text('Calcular');
+			});
+		});
+		$('button').on('click', function(){
+			$(this).prop('disabled', true);
+			$(this).text('Calculando...');
+			$(this).prepend(`<span id="load-button" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> `);
+			$('form').submit();
 		});
 	</script>
 </body>

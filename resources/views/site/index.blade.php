@@ -73,10 +73,10 @@
 					</div>
                 </div>
 				
-				
 				<div class="d-flex align-items-center">
-					<button class="btn btn-primary" type="submit">Calcular</button>
-					<div class="load spinner-border ml-auto" role="status" aria-hidden="true"></div>
+					<button class="btn btn-dark" type="submit">
+						<span class="load spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+					</button>
 				</div>
             </form>
         </div>

@@ -12,81 +12,18 @@ class SimulatorController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $cityCodes = CityCode::all();
-        // $cityCodePrices = CityCodePrice::all();
         $plans = Plan::all();
 
-        return view('site.index', compact('cityCodes', 'plans'));
-    }
+        $normalPlanCalculation = 0.0;
+        $talkMoreCalculation = 0.0;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('site.index', compact('cityCodes', 'plans', 'talkMoreCalculation', 'normalPlanCalculation', 'request'));
     }
 
     /**
@@ -99,7 +36,62 @@ class SimulatorController extends Controller
     {
         $this->validateForm($request);
 
-        dd($request->all());
+        $cityCodes = CityCode::all();
+        $plans = Plan::all();
+
+        $valueOriginDestination = $this->valueOriginDestination($request);
+        $normalPlanCalculation = $this->normalPlanCalculation($request);
+        $talkMoreCalculation = $this->talkMoreCalculation($request);
+        session()->flash('modal', true);
+
+        return view('site.index', compact('cityCodes', 'plans', 'talkMoreCalculation', 'normalPlanCalculation', 'request'));
+    }
+    
+    /**
+     * Method responsible for verifying the value of the flat rate
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Float
+     */
+    private function valueOriginDestination($request)
+    {
+        $cityCodePrices = CityCodePrice::all();
+
+        foreach ($cityCodePrices as $value) {
+            if ($request->origin === $value->origin && $request->destination === $value->destination) {
+                return $value->price;
+            }
+        }
+    }
+
+    /**
+     * Method responsible for verifying the value of the normal plan rate
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Float
+     */
+    private function normalPlanCalculation($request)
+    {
+        return $request->minutes * $this->valueOriginDestination($request);
+    }
+
+    /**
+     * Method responsible for verifying the value of the FaleMais plan rate
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Float
+     */
+    private function talkMoreCalculation($request)
+    {
+        if ($request->minutes <= $request->plan) {
+            return 0.0;
+        }else{
+            $surplusMinutes = $request->minutes - $request->plan;
+            $valueOriginDestination = $this->valueOriginDestination($request);
+            $percentage = ($valueOriginDestination * 10) / 100;
+            $addition = $valueOriginDestination + $percentage;
+            return $surplusMinutes * $addition;
+        }
     }
 
     /**
@@ -108,20 +100,20 @@ class SimulatorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function validateForm(Request $request)
+    private function validateForm(Request $request)
     {
         return $request->validate(
             [
                 'origin'  => 'required|exists:city_codes,code',
-                'destiny' => 'required|exists:city_codes,code',
+                'destination' => 'required|exists:city_codes,code',
                 'minutes' => 'required|integer|max:43800',
                 'plan'    => 'required|exists:plans,minutes',
             ],
             [
                 'origin.required' => 'Selecione o DDD de origem',
                 'origin.exists' => 'DDD de origem informada inválido.',
-                'destiny.required' => 'Selecione o DDD de destino',
-                'destiny.exists' => 'DDD de Destino informada inválido.',
+                'destination.required' => 'Selecione o DDD de destino',
+                'destination.exists' => 'DDD de Destino informada inválido.',
                 'minutes.required' => 'Forneça os minutos da ligação',
                 'minutes.integer' => 'O campo minutos da ligação deve ser um número inteiro',
                 'minutes.max' => 'O campo minutos da ligação não pode ser mais de 43800 minutos.',

@@ -44,15 +44,24 @@
 	<script>
 		$(document).ready(function() {
    			$('.load').fadeOut('slow', function(){
-				$('button').text('Calcular');
+				$('#simulator').text('Calcular');
 			});
 		});
-		$('button').on('click', function(){
+		$('#simulator').on('click', function(){
 			$(this).prop('disabled', true);
 			$(this).text('Calculando...');
 			$(this).prepend(`<span id="load-button" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> `);
 			$('form').submit();
 		});
+
+		@if(session('modal'))
+			$(document).ready(function(){
+				$('#simulatorResult').modal('show');
+			});
+			@php
+				session()->flush();
+			@endphp
+		@endif
 	</script>
 </body>
 </html>

@@ -4,7 +4,6 @@
 
 @section('content')
     <h1 class="mt-5 text-center">Simulador de custo de ligação</h1>
-	
     <div class="card shadow-lg p-3 rounded">
         <div class="card-body">
             <form action="{{ route('simulator') }}">
@@ -14,7 +13,7 @@
 						<select name="origin" class="custom-select @if($errors->has('origin')) is-invalid @endif" id="origin" aria-describedby="validationServerOrigin">
 						  <option selected disabled value="">Selecione...</option>
 						  @forelse ($cityCodes as $code)
-						  	<option value="{{ $code->code }}" @if(old('origin') == $code->code) selected @endif>{{ $code->code }}</option>
+						  	<option value="{{ $code->code }}" @if(old('origin', $request->origin) == $code->code) selected @endif>{{ $code->code }}</option>
 						  @empty
 						  	<option>Nenhum registro encontrado</option>
 						  @endforelse
@@ -31,7 +30,7 @@
 						<select name="destination" class="custom-select @if($errors->has('destination')) is-invalid @endif" id="destination" aria-describedby="validationServerDestination">
 						  <option selected disabled value="">Selecione...</option>
 						  @forelse ($cityCodes as $code)
-						  	<option value="{{ $code->code }}" @if(old('destination') == $code->code) selected @endif>{{ $code->code }}</option>
+						  	<option value="{{ $code->code }}" @if(old('destination', $request->destination) == $code->code) selected @endif>{{ $code->code }}</option>
 						  @empty
 						  	<option>Nenhum registro encontrado</option>
 						  @endforelse
@@ -47,7 +46,7 @@
                 <div class="form-row">
 					<div class="col-md-6 mb-3">
 						<label for="minutes">Minutos da ligação</label>
-						<input type="number" name="minutes" class="form-control @if($errors->has('minutes')) is-invalid @endif" value="{{ old('minutes') }}" id="minutes" aria-describedby="validationServerMinutes">
+						<input type="number" name="minutes" class="form-control @if($errors->has('minutes')) is-invalid @endif" value="{{ old('minutes', $request->minutes) }}" id="minutes" aria-describedby="validationServerMinutes">
 						@error('minutes')
 							<div id="validationServerMinutes" class="invalid-feedback">
 								{{ $message }}
@@ -60,7 +59,7 @@
 						<select name="plan" class="custom-select @if($errors->has('plan')) is-invalid @endif" id="plan" aria-describedby="validationServerPlan">
 							<option selected disabled value="">Selecione...</option>
 							@forelse ($plans as $plan)
-								<option value="{{ $plan->minutes }}" @if(old('plan') == $plan->minutes) selected @endif>{{ $plan->name }}</option>
+								<option value="{{ $plan->minutes }}" @if(old('plan', $request->plan) == $plan->minutes) selected @endif>{{ $plan->name }}</option>
 							@empty
 								<option>Nenhum registro encontrado</option>
 							@endforelse
@@ -74,11 +73,14 @@
                 </div>
 				
 				<div class="d-flex align-items-center">
-					<button class="btn btn-dark" type="submit">
+					<button id="simulator" class="btn btn-dark" type="submit">
 						<span class="load spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 					</button>
 				</div>
             </form>
+			@component('site.components.modal', compact('talkMoreCalculation', 'normalPlanCalculation', 'request'))
+				
+			@endcomponent
         </div>
     </div>
 @endsection

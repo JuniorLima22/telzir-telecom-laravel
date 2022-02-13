@@ -42,18 +42,6 @@
 	<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
 
 	<script>
-		$(document).ready(function() {
-   			$('.load').fadeOut('slow', function(){
-				$('#simulator').text('Calcular');
-			});
-		});
-		$('#simulator').on('click', function(){
-			$(this).prop('disabled', true);
-			$(this).text('Calculando...');
-			$(this).prepend(`<span id="load-button" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> `);
-			$('form').submit();
-		});
-
 		@if(session('modal'))
 			$(document).ready(function(){
 				$('#simulatorResult').modal('show');
@@ -63,5 +51,6 @@
 			@endphp
 		@endif
 	</script>
+	@yield('scripts')
 </body>
 </html>

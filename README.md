@@ -167,6 +167,11 @@ As seguintes ferramentas 🛠 foram usadas na construção do projeto:
   - Canal no Youtuber [Junior Araújo](https://youtu.be/4oO_ZGX3Rbs)
   - Canal no Youtuber [Carioca Code](https://youtu.be/GienvDWdBmo)
 
+### Wakatime
+Tempo gasto no IDE para este repositório, rastreado automaticamente com [wakatime](https://wakatime.com/) .
+
+[![wakatime](https://wakatime.com/badge/github/JuniorLima22/telzir-telecom-laravel.svg)](https://wakatime.com/badge/github/JuniorLima22/telzir-telecom-laravel)
+
 ### Autor
 
 > Made with 💙 by JUNIOR LIMA 👋 [See my LinkedIn](https://www.linkedin.com/in/junior-lima-495108208/) • GitHub [@JuniorLima22](https://github.com/JuniorLima22)
